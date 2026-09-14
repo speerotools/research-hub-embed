@@ -44,6 +44,8 @@ rolling back is a one-character edit in Webflow.
 | `methodBase` | `"/research-methods/"` | Same for methods |
 | `hubNav` | `true` | Renders the hub nav (Speero mark, Research Hub, three links, Ask Reese). Turn off only if the page supplies its own |
 | `reese` | `true` | Renders the Ask Reese floating button and panel |
+| `reeseOnly` | `false` | Renders Reese and nothing else, skipping the data fetch. For CMS detail pages, which carry no hub data |
+| `problemsUrl` / `recipesUrl` / `methodsUrl` | the three hub URLs | Where Reese's directory suggestions go when the embed is not running the hub |
 | `defaultRoute` | `""` | Which view to open with no hash in the URL. `"methods"` on the methods landing page, empty for the hub landing |
 
 ## Why detail links leave the embed

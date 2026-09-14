@@ -32,7 +32,13 @@ const CFG = Object.assign({
   methodBase:   "/research-methods/",
   defaultRoute: "",
   hubNav:       true,
-  reese:        true
+  reese:        true,
+  // Reese-only: render the button and panel, skip the data fetch and the
+  // views. For the CMS detail pages, which carry no hub data of their own.
+  reeseOnly:    false,
+  problemsUrl:  "/research-problems",
+  recipesUrl:   "/research-recipes",
+  methodsUrl:   "/research-methods"
 }, window.RESEARCH_HUB_CONFIG || {});
 
 const rUrl = s => CFG.recipeBase ? CFG.recipeBase + s : "#/recipe/" + s;
@@ -521,7 +527,17 @@ function openReese(){ const p=byId("reesePanel"),o=byId("reeseOverlay"),f=byId("
   if(p)p.classList.add("open"); if(o)o.classList.add("show"); if(f)f.setAttribute("aria-expanded","true"); }
 function closeReese(){ const p=byId("reesePanel"),o=byId("reeseOverlay"),f=byId("reeseFab");
   if(p)p.classList.remove("open"); if(o)o.classList.remove("show"); if(f)f.setAttribute("aria-expanded","false"); }
-function reeseGo(route){ closeReese(); location.hash = "#/"+route; }
+function reeseGo(route){
+  closeReese();
+  // A hash only means something on a page running the hub. Everywhere else,
+  // and on the detail pages, the suggestions have to go to real URLs.
+  const [kind, slug] = route.split("/");
+  if(kind === "recipe" && slug) { location.href = rUrl(slug); return; }
+  if(kind === "method" && slug) { location.href = mUrl(slug); return; }
+  const dir = { problems: CFG.problemsUrl, recipes: CFG.recipesUrl, methods: CFG.methodsUrl }[kind];
+  if(dir && CFG.recipeBase) { location.href = dir; return; }
+  location.hash = "#/" + route;
+}
 
 
 
@@ -542,6 +558,14 @@ function fail(msg){
 async function boot(){
   app = document.getElementById(CFG.mount);
   if(!app){ console.error("[research-hub] no #" + CFG.mount + " on the page"); return; }
+
+  if(CFG.reeseOnly){
+    app.innerHTML = reeseChrome();
+    window.openReese = openReese; window.closeReese = closeReese; window.reeseGo = reeseGo;
+    wireReese();
+    document.addEventListener("keydown", e => { if(e.key === "Escape") closeReese(); });
+    return;
+  }
 
   let data;
   try {
