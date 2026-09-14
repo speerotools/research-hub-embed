@@ -36,6 +36,10 @@ const CFG = Object.assign({
   // Reese-only: render the button and panel, skip the data fetch and the
   // views. For the CMS detail pages, which carry no hub data of their own.
   reeseOnly:    false,
+  // Placeholder until the real chat lands. Override to change the example
+  // questions without cutting a new version: [["question","recipe/slug"], ...]
+  // Routes: recipe/<slug>, method/<slug>, problems, recipes, methods.
+  reeseSuggestions: null,
   problemsUrl:  "/research-problems",
   recipesUrl:   "/research-recipes",
   methodsUrl:   "/research-methods"
@@ -98,7 +102,9 @@ function reeseChrome(){
 function wireReese(){
   if(!CFG.reese) return;
   const suggs = byId("reeseSuggs");
-  if(suggs) suggs.innerHTML = SUGGS.map(([q,r]) => `<button type="button" data-reese="${r}">${esc(q)}</button>`).join("");
+  const list = Array.isArray(CFG.reeseSuggestions) && CFG.reeseSuggestions.length
+    ? CFG.reeseSuggestions : SUGGS;
+  if(suggs) suggs.innerHTML = list.map(([q,r]) => `<button type="button" data-reese="${r}">${esc(q)}</button>`).join("");
   const fab = byId("reeseFab"), nav = byId("navReese"),
         close = byId("reeseClose"), overlay = byId("reeseOverlay");
   if(fab) fab.addEventListener("click", openReese);
