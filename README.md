@@ -19,7 +19,7 @@ One Code Embed block on the landing page:
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,600;0,900;1,900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/speerotools/research-hub-embed@v1.0.0/dist/embed.css">
 
-<div id="app"></div>
+<div id="speero-research-hub"></div>
 
 <script>
   window.RESEARCH_HUB_CONFIG = {
@@ -42,6 +42,7 @@ rolling back is a one-character edit in Webflow.
 | `mount` | `"app"` | Id of the element to render into |
 | `recipeBase` | `"/research-recipes/"` | Recipe links go to the Webflow CMS page. `null` renders the in-embed detail view instead |
 | `methodBase` | `"/research-methods/"` | Same for methods |
+| `defaultRoute` | `""` | Which view to open with no hash in the URL. `"methods"` on the methods landing page, empty for the hub landing |
 
 ## Why detail links leave the embed
 
@@ -71,4 +72,4 @@ git tag v1.0.0 && git push --tags
 ```
 
 Then bump the tag in the Webflow embed. Nothing else. The CSS is scoped
-under `#app`, so it cannot reach the rest of the page.
+under `#speero-research-hub`, so it cannot reach the rest of the page.

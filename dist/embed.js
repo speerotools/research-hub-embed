@@ -17,7 +17,7 @@
    Usage in Webflow, inside a Code Embed on the hub landing page:
 
      <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/speerotools/research-hub-embed@v1.0.0/dist/embed.css">
-     <div id="app"></div>
+     <div id="speero-research-hub"></div>
      <script>
        window.RESEARCH_HUB_CONFIG = { recipeBase: "/research-recipes/",
                                       methodBase: "/research-methods/" };
@@ -32,9 +32,10 @@
 
 const CFG = Object.assign({
   dataUrl:    "https://cdn.jsdelivr.net/gh/speerotools/research-hub-data@main/research-hub.json",
-  mount:      "app",
-  recipeBase: "/research-recipes/",
-  methodBase: "/research-methods/"
+  mount:      "speero-research-hub",
+  recipeBase:   "/research-recipes/",
+  methodBase:   "/research-methods/",
+  defaultRoute: ""
 }, window.RESEARCH_HUB_CONFIG || {});
 
 /* The blueprint thumbnail, inlined by the prototype three times over.
@@ -428,7 +429,9 @@ function vMethod(slug){
 
 /* -------- router -------- */
 function render(){
-  const h = location.hash.replace(/^#\/?/,"");
+  // With no hash, open on CFG.defaultRoute. /research-methods wants the
+  // method directory, /research-recipes wants the landing view.
+  const h = location.hash.replace(/^#\/?/,"") || CFG.defaultRoute || "";
   const [route, arg] = h.split("/");
   let html, navKey = route || "home";
   if(!route) html = vLanding();
