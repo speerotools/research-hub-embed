@@ -6,8 +6,8 @@ filterable method directory. Data comes from the sync job, never from this
 repo.
 
 ```
-https://cdn.jsdelivr.net/gh/speerotools/research-hub-embed@v1.1.1/dist/embed.js
-https://cdn.jsdelivr.net/gh/speerotools/research-hub-embed@v1.1.1/dist/embed.css
+https://cdn.jsdelivr.net/gh/speerotools/research-hub-embed@v1.2.1/dist/embed.js
+https://cdn.jsdelivr.net/gh/speerotools/research-hub-embed@v1.2.1/dist/embed.css
 ```
 
 ## Webflow install
@@ -17,7 +17,7 @@ One Code Embed block on the landing page:
 ```html
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,600;0,900;1,900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/speerotools/research-hub-embed@v1.1.1/dist/embed.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/speerotools/research-hub-embed@v1.2.1/dist/embed.css">
 
 <div id="speero-research-hub"></div>
 
@@ -27,7 +27,7 @@ One Code Embed block on the landing page:
     methodBase: "/research-methods/"
   };
 </script>
-<script src="https://cdn.jsdelivr.net/gh/speerotools/research-hub-embed@v1.1.1/dist/embed.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/speerotools/research-hub-embed@v1.2.1/dist/embed.js"></script>
 ```
 
 **Pin the version tag.** `@main` is mutable and jsDelivr caches it, so a bad
