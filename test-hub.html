@@ -1,0 +1,39 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Research Recipe Hub — local test</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,600;0,900;1,900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="dist/embed.css">
+
+<!--
+  Local harness. Serve it, do not open it from the filesystem, or the fetch
+  is blocked by CORS:
+
+      python3 -m http.server 8000
+      open http://localhost:8000/test-hub.html
+
+  Defaults to the published CDN data. Point it somewhere else with ?data=,
+  for example the committed fixture in the data repo:
+
+      ?data=../research-hub-data/fixtures/research-hub.sample.json
+
+  Detail links default to the in-embed views so the whole hub is browsable
+  offline. Add ?links=cms to point them at the Webflow CMS URLs instead,
+  which is how it behaves on speero.com.
+-->
+
+<div id="app"></div>
+
+<script>
+  const params = new URLSearchParams(location.search);
+  window.RESEARCH_HUB_CONFIG = {
+    dataUrl: params.get("data") ||
+      "https://cdn.jsdelivr.net/gh/speerotools/research-hub-data@main/research-hub.json",
+    recipeBase: params.get("links") === "cms" ? "/research-recipes/" : null,
+    methodBase: params.get("links") === "cms" ? "/research-methods/" : null
+  };
+</script>
+<script src="dist/embed.js"></script>
