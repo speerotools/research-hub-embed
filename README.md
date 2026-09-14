@@ -6,8 +6,8 @@ filterable method directory. Data comes from the sync job, never from this
 repo.
 
 ```
-https://cdn.jsdelivr.net/gh/speerotools/research-hub-embed@v1.2.1/dist/embed.js
-https://cdn.jsdelivr.net/gh/speerotools/research-hub-embed@v1.2.1/dist/embed.css
+https://cdn.jsdelivr.net/gh/speerotools/research-hub-embed@v2.0.0/dist/embed.js
+https://cdn.jsdelivr.net/gh/speerotools/research-hub-embed@v2.0.0/dist/embed.css
 ```
 
 ## Webflow install
@@ -17,7 +17,7 @@ One Code Embed block on the landing page:
 ```html
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,600;0,900;1,900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/speerotools/research-hub-embed@v1.2.1/dist/embed.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/speerotools/research-hub-embed@v2.0.0/dist/embed.css">
 
 <div id="speero-research-hub"></div>
 
@@ -27,7 +27,7 @@ One Code Embed block on the landing page:
     methodBase: "/research-methods/"
   };
 </script>
-<script src="https://cdn.jsdelivr.net/gh/speerotools/research-hub-embed@v1.2.1/dist/embed.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/speerotools/research-hub-embed@v2.0.0/dist/embed.js"></script>
 ```
 
 **Pin the version tag.** `@main` is mutable and jsDelivr caches it, so a bad
@@ -42,8 +42,8 @@ rolling back is a one-character edit in Webflow.
 | `mount` | `"app"` | Id of the element to render into |
 | `recipeBase` | `"/research-recipes/"` | Recipe links go to the Webflow CMS page. `null` renders the in-embed detail view instead |
 | `methodBase` | `"/research-methods/"` | Same for methods |
-| `hubNav` | `true` | The hub's own nav: the only route to the problem browser, which has no URL of its own. Separate from the Webflow site nav above it |
-| `suppressHero` | `false` | Landing view drops its hero, for a page that renders its own H1 and intro |
+| `hubNav` | `true` | Renders the hub nav (Speero mark, Research Hub, three links, Ask Reese). Turn off only if the page supplies its own |
+| `reese` | `true` | Renders the Ask Reese floating button and panel |
 | `defaultRoute` | `""` | Which view to open with no hash in the URL. `"methods"` on the methods landing page, empty for the hub landing |
 
 ## Why detail links leave the embed
