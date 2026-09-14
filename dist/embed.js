@@ -35,7 +35,13 @@ const CFG = Object.assign({
   mount:      "speero-research-hub",
   recipeBase:   "/research-recipes/",
   methodBase:   "/research-methods/",
-  defaultRoute: ""
+  defaultRoute: "",
+  // The page already renders its own H1 and intro, so the landing view drops
+  // its hero rather than repeating it.
+  suppressHero: false,
+  // The hub's own nav. Separate from the Webflow site nav above it: this is
+  // how you reach the problem browser, which has no URL of its own.
+  hubNav:       true
 }, window.RESEARCH_HUB_CONFIG || {});
 
 /* The blueprint thumbnail, inlined by the prototype three times over.
@@ -63,11 +69,44 @@ const problemCards = list => list.map(([slug,r])=>`
 
 /* counts are derived in boot(), once DATA has arrived */
 
+/* -------- hub chrome -------- */
+/* The prototype carried this as static HTML around #app, so it never made it
+   into the extracted embed. Without it there is no way to reach the problem
+   browser, which is the hub's front door and has no URL of its own. */
+function hubChrome(){
+  if(!CFG.hubNav) return "";
+  return `
+  <nav class="rhx-nav" aria-label="Research hub">
+    <div class="wrap rhx-nav-in">
+      <a class="rhx-hub" href="#/">
+        <span class="rhx-glyph" aria-hidden="true">
+          <svg viewBox="0 0 40 40" width="24" height="24" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="17" fill="none" stroke="#001641" stroke-width="2.5"/><text x="20" y="26" text-anchor="middle" font-family="Poppins,Arial,sans-serif" font-size="15" font-weight="900" font-style="italic" fill="#480F43">Rx</text></svg>
+        </span>Research Recipe Hub</a>
+      <div class="rhx-links">
+        <a href="#/problems" data-nav="problems">Start with a problem</a>
+        <a href="#/recipes" data-nav="recipes">Recipes</a>
+        <a href="#/methods" data-nav="methods">Methods</a>
+      </div>
+    </div>
+    <div class="rhx-loc" aria-label="Where this hub sits in XOS">
+      <div class="wrap rhx-loc-in">
+        <span class="rhx-sys">XOS</span>
+        <span class="rhx-spine">
+          <a class="rhx-node" href="/blueprints"><span class="rhx-dot"></span><span>Process · Blueprints</span></a>
+          <span class="rhx-node rhx-current" aria-current="true"><span class="rhx-dot"></span><span>Discovery · Research recipes</span></span>
+          <a class="rhx-node" href="/ab-testing-tools"><span class="rhx-dot"></span><span>Tooling · Testing tools</span></a>
+          <span class="rhx-node rhx-soon" title="Coming soon"><span class="rhx-dot"></span><span>Proof · Stories</span></span>
+        </span>
+      </div>
+    </div>
+  </nav>`;
+}
+
 /* -------- views -------- */
 function vLanding(){
   const featured = ["churn-retention","checkout-cart-optimisation","researching-low-traffic"];
   return `
-  <section class="hero wrap">
+  ${CFG.suppressHero ? "" : `<section class="hero wrap">
     <span class="eyebrow" style="font-size:14px">The recipe layer of ROS, Speero's research operating system</span>
     <h1>Research turns data into insight.<br><em>Insight multiplies impact.</em></h1>
     <p class="lede">Most teams know the symptom: low conversion, rising churn, a redesign about to ship. The hard part is knowing which research to run, and how to combine methods so the findings corroborate each other instead of sitting in isolation. That's what this hub is for. Continuous discovery runs on recipes, not one-off projects.</p>
@@ -76,7 +115,7 @@ function vLanding(){
       <a class="btn btn-outline" href="#/recipes">Browse the recipes</a>
       <a class="btn btn-outline" href="#/methods">Browse the methods</a>
     </div>
-  </section>
+  </section>`}
 
   <section class="section wrap" style="padding-top:28px;padding-bottom:28px">
     <div class="bp" style="padding:26px 26px 16px">
@@ -441,7 +480,7 @@ function render(){
   else if(route==="methods") html = vMethods();
   else if(route==="method") { html = vMethod(arg); navKey="methods"; }
   else html = vLanding();
-  app.innerHTML = html;
+  app.innerHTML = hubChrome() + html;
   renderMethodGrid();
   document.querySelectorAll("[data-nav]").forEach(a=>a.setAttribute("aria-current", a.dataset.nav===navKey ? "true":"false"));
   window.scrollTo({top:0, behavior:"auto"});

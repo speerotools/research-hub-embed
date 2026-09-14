@@ -42,6 +42,8 @@ rolling back is a one-character edit in Webflow.
 | `mount` | `"app"` | Id of the element to render into |
 | `recipeBase` | `"/research-recipes/"` | Recipe links go to the Webflow CMS page. `null` renders the in-embed detail view instead |
 | `methodBase` | `"/research-methods/"` | Same for methods |
+| `hubNav` | `true` | The hub's own nav: the only route to the problem browser, which has no URL of its own. Separate from the Webflow site nav above it |
+| `suppressHero` | `false` | Landing view drops its hero, for a page that renders its own H1 and intro |
 | `defaultRoute` | `""` | Which view to open with no hash in the URL. `"methods"` on the methods landing page, empty for the hub landing |
 
 ## Why detail links leave the embed

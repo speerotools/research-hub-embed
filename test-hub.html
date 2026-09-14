@@ -34,7 +34,8 @@
       "https://cdn.jsdelivr.net/gh/speerotools/research-hub-data@main/research-hub.json",
     recipeBase: params.get("links") === "cms" ? "/research-recipes/" : null,
     methodBase: params.get("links") === "cms" ? "/research-methods/" : null,
-    defaultRoute: params.get("route") || ""
+    defaultRoute: params.get("route") || "",
+    suppressHero: params.get("hero") === "off"
   };
 </script>
 <script src="dist/embed.js"></script>

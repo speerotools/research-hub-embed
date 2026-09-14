@@ -209,3 +209,29 @@ footer{background:var(--blue);color:rgba(255,255,255,.75);padding:26px 0;border-
 #speero-research-hub .view.active{display:block}
 #speero-research-hub .mt0{margin-top:0}
 #speero-research-hub .sub{font-size:15px;opacity:.9}
+
+/* Hub nav, rebuilt from the prototype's static chrome. Prefixed rhx- so it
+   cannot collide with the Webflow site nav sitting above it. */
+#speero-research-hub .rhx-nav{border-bottom:1px solid rgba(0,22,65,.15);margin-bottom:8px}
+#speero-research-hub .rhx-nav-in{display:flex;align-items:center;gap:28px;min-height:56px;flex-wrap:wrap}
+#speero-research-hub .rhx-hub{display:flex;align-items:center;gap:10px;font-weight:600;font-size:13px;letter-spacing:.05em;text-transform:uppercase;color:#001641;text-decoration:none}
+#speero-research-hub .rhx-hub:hover{color:#FF0049}
+#speero-research-hub .rhx-glyph{display:inline-flex}
+#speero-research-hub .rhx-links{display:flex;gap:22px;margin-left:auto;align-items:center;flex-wrap:wrap}
+#speero-research-hub .rhx-links a{color:#001641;font-weight:600;font-size:14px;text-decoration:none}
+#speero-research-hub .rhx-links a:hover{color:#FF0049}
+#speero-research-hub .rhx-links a[aria-current="true"]{color:#FF0049}
+#speero-research-hub .rhx-loc{padding:8px 0 14px}
+#speero-research-hub .rhx-loc-in{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+#speero-research-hub .rhx-sys{font-weight:900;font-style:italic;font-size:11px;letter-spacing:.14em;color:#480F43}
+#speero-research-hub .rhx-spine{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+#speero-research-hub .rhx-node{display:flex;align-items:center;gap:7px;font-size:11.5px;letter-spacing:.02em;color:rgba(0,22,65,.6);text-decoration:none}
+#speero-research-hub a.rhx-node:hover{color:#FF0049}
+#speero-research-hub .rhx-dot{width:7px;height:7px;border-radius:50%;background:rgba(0,22,65,.25);flex:none}
+#speero-research-hub .rhx-current{color:#001641;font-weight:600}
+#speero-research-hub .rhx-current .rhx-dot{background:#FF0049}
+#speero-research-hub .rhx-soon{opacity:.45}
+@media(max-width:700px){
+  #speero-research-hub .rhx-links{margin-left:0;gap:16px}
+  #speero-research-hub .rhx-nav-in{gap:12px}
+}
