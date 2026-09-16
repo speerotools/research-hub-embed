@@ -24,7 +24,8 @@
     // null keeps detail views inside the embed, which is how the wireframe behaves
     recipeBase: params.get("links") === "cms" ? "/research-recipes/" : null,
     methodBase: params.get("links") === "cms" ? "/research-methods/" : null,
-    defaultRoute: params.get("route") || ""
+    defaultRoute: params.get("route") || "",
+    reese: params.get("reese") !== "off"
   };
 </script>
 <script src="dist/embed.js"></script>

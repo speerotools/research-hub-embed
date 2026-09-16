@@ -48,6 +48,12 @@ const CFG = Object.assign({
 const rUrl = s => CFG.recipeBase ? CFG.recipeBase + s : "#/recipe/" + s;
 const mUrl = s => CFG.methodBase ? CFG.methodBase + s : "#/method/" + s;
 
+/* Directory links. On the live site these are real pages, so the hub home
+   connects to them instead of only switching the view in place. Falls back
+   to the hash route when no CMS bases are configured (local preview). */
+const DIRS = { problems: "problemsUrl", recipes: "recipesUrl", methods: "methodsUrl" };
+const dirUrl = k => (CFG.recipeBase && CFG[DIRS[k]]) ? CFG[DIRS[k]] : "#/" + k;
+
 let DATA, M, R, OUT, methodCount, recipeCount, oppCount, app;
 
 const byId = id => app ? app.querySelector("#" + id) : null;
@@ -64,9 +70,9 @@ function hubChrome(){
     <a class="nav-logo" href="#/" aria-label="Speero home"><img src="${LOGO}" alt="Speero"></a>
     <span class="nav-hub">Research Hub</span>
     <div class="nav-links">
-      <a href="#/problems" data-nav="problems">Start with a problem</a>
-      <a href="#/recipes" data-nav="recipes">Recipes</a>
-      <a href="#/methods" data-nav="methods">Methods</a>
+      <a href="${dirUrl('problems')}" data-nav="problems">Start with a problem</a>
+      <a href="${dirUrl('recipes')}" data-nav="recipes">Recipes</a>
+      <a href="${dirUrl('methods')}" data-nav="methods">Methods</a>
       <button class="btn btn-red" id="navReese" type="button">Ask Reese</button>
     </div>
   </div>
@@ -144,9 +150,9 @@ function vLanding(){
     <h1>Research turns data into insight.<br><em>Insight multiplies impact.</em></h1>
     <p class="lede">Most teams know the symptom: low conversion, rising churn, a redesign about to ship. The hard part is knowing which research to run, and how to combine methods so the findings corroborate each other instead of sitting in isolation. That's what this hub is for.</p>
     <div class="hero-ctas">
-      <a class="btn btn-red" href="#/problems">Start with your problem</a>
-      <a class="btn btn-outline" href="#/recipes">Browse the recipes</a>
-      <button class="btn btn-outline" type="button" onclick="openReese()">Ask Reese</button>
+      <a class="btn btn-red" href="${dirUrl('problems')}">Start with your problem</a>
+      <a class="btn btn-outline" href="${dirUrl('recipes')}">Browse the recipes</a>
+      ${CFG.reese ? '<button class="btn btn-outline" type="button" onclick="openReese()">Ask Reese</button>' : ""}
     </div>
   </section>
 
@@ -236,7 +242,7 @@ function vLanding(){
         <h2>Start with the problem, not the method</h2>
         <p class="sub">Every recipe opens from a problem stated the way a customer would say it. Pick the one you're hearing.</p>
       </div>
-      <a class="btn btn-outline" href="#/problems">All ${oppCount} problems</a>
+      <a class="btn btn-outline" href="${dirUrl('problems')}">All ${oppCount} problems</a>
     </div>
     <div class="grid">${problemCards(featured.map(s=>[s,R[s]]))}</div>
   </section>
@@ -355,7 +361,7 @@ function vRecipe(slug){
   const opps = r.opp2 ? `${esc(r.opp)} · ${esc(r.opp2)}` : esc(r.opp);
   return `
   <div class="wrap">
-    <div class="crumb"><a href="#/recipes">Recipes</a> <span>/</span> ${esc(r.name)}</div>
+    <div class="crumb"><a href="${dirUrl('recipes')}">Recipes</a> <span>/</span> ${esc(r.name)}</div>
     <div class="detail-hero">
       <span class="eyebrow">Research recipe · ${outName(r.outcome)}</span>
       <h1>${esc(r.name)}</h1>
@@ -453,7 +459,7 @@ function vMethod(slug){
   const rel = m.related && M[m.related] ? `<p style="margin-top:20px" class="sub">Often paired with <a href="${mUrl(m.related)}"><strong>${esc(M[m.related].name)}</strong></a>.</p>` : "";
   return `
   <div class="wrap">
-    <div class="crumb"><a href="#/methods">Methods</a> <span>/</span> ${esc(m.name)}</div>
+    <div class="crumb"><a href="${dirUrl('methods')}">Methods</a> <span>/</span> ${esc(m.name)}</div>
     <div class="detail-hero">
       <span class="eyebrow">Research method</span>
       <h1>${esc(m.name)}</h1>
