@@ -6,8 +6,8 @@ filterable method directory. Data comes from the sync job, never from this
 repo.
 
 ```
-https://cdn.jsdelivr.net/gh/speerotools/research-hub-embed@v2.0.0/dist/embed.js
-https://cdn.jsdelivr.net/gh/speerotools/research-hub-embed@v2.0.0/dist/embed.css
+https://cdn.jsdelivr.net/gh/speerotools/research-hub-embed@v2.1.0/dist/embed.js
+https://cdn.jsdelivr.net/gh/speerotools/research-hub-embed@v2.1.0/dist/embed.css
 ```
 
 ## Webflow install
@@ -17,7 +17,7 @@ One Code Embed block on the landing page:
 ```html
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,600;0,900;1,900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/speerotools/research-hub-embed@v2.0.0/dist/embed.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/speerotools/research-hub-embed@v2.1.0/dist/embed.css">
 
 <div id="speero-research-hub"></div>
 
@@ -27,7 +27,7 @@ One Code Embed block on the landing page:
     methodBase: "/research-methods/"
   };
 </script>
-<script src="https://cdn.jsdelivr.net/gh/speerotools/research-hub-embed@v2.0.0/dist/embed.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/speerotools/research-hub-embed@v2.1.0/dist/embed.js"></script>
 ```
 
 **Pin the version tag.** `@main` is mutable and jsDelivr caches it, so a bad
@@ -47,6 +47,7 @@ rolling back is a one-character edit in Webflow.
 | `reeseSuggestions` | the five defaults | Example questions, `[["question","recipe/slug"], …]`. A placeholder until the real chat lands; overriding avoids cutting a version to reword them |
 | `reeseOnly` | `false` | Renders Reese and nothing else, skipping the data fetch. For CMS detail pages, which carry no hub data |
 | `problemsUrl` / `recipesUrl` / `methodsUrl` | the three hub URLs | Where Reese's directory suggestions go when the embed is not running the hub |
+| `contactUrl` | `"/#main-form"` | Where the "Talk to us" buttons go |
 | `defaultRoute` | `""` | Which view to open with no hash in the URL. `"methods"` on the methods landing page, empty for the hub landing |
 
 ## Why detail links leave the embed
@@ -59,6 +60,25 @@ filtering, and the CMS owns the pages.
 The landing page must also carry a plain-HTML list of every recipe and
 method, outside this embed. That list is what passes authority into the 51
 new URLs, and it has to exist with JavaScript turned off.
+
+## Native page content (v2.1.0)
+
+Each of the four landing pages carries, outside this embed:
+
+- a header marked `data-rh-native-head` holding the page's only H1 and its
+  intro paragraph;
+- a section marked `data-rh-native-dir`: a Webflow Collection List of
+  Research Recipes or Research Methods (sorted by the synced `sort-order`
+  field), with real links bound to each item's `page-url`.
+
+The embed never touches the H1. When the page has one, the hub home skips
+its own hero heading. The embed hides the native directory only after its
+own view has rendered, so with JavaScript off, or when the data fetch fails,
+the native directory stays readable. Its own view headings are H2 and its
+cards H3, under the page H1.
+
+"Talk to us" goes to `contactUrl`, the homepage enquiry form
+(`/#main-form`). `/contact` is a 404.
 
 ## Local testing
 

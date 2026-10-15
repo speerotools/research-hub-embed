@@ -42,8 +42,21 @@ const CFG = Object.assign({
   reeseSuggestions: null,
   problemsUrl:  "/research-problems",
   recipesUrl:   "/research-recipes",
-  methodsUrl:   "/research-methods"
+  methodsUrl:   "/research-methods",
+  // Where "Talk to us" goes. The homepage enquiry form; /contact is a 404.
+  contactUrl:   "/#main-form"
 }, window.RESEARCH_HUB_CONFIG || {});
+
+/* Native page content. The Webflow page carries its own H1, intro and a
+   plain-HTML directory so crawlers and no-JS visitors get real content and
+   real links. The embed never touches the H1. It hides the native directory
+   only after its own view has rendered, so a failed fetch leaves it readable,
+   and it skips its own hero heading when the page already has an H1. */
+const NATIVE_DIR  = "[data-rh-native-dir]";
+const hasNativeH1 = () => !!document.querySelector("[data-rh-native-head] h1, h1[data-rh-native-head]");
+function enhanceNative(){
+  document.querySelectorAll(NATIVE_DIR).forEach(el => { el.style.display = "none"; el.setAttribute("aria-hidden","true"); });
+}
 
 const rUrl = s => CFG.recipeBase ? CFG.recipeBase + s : "#/recipe/" + s;
 const mUrl = s => CFG.methodBase ? CFG.methodBase + s : "#/method/" + s;
@@ -146,8 +159,8 @@ function vLanding(){
   const featured = ["churn-retention","checkout-cart-optimisation","researching-low-traffic"];
   return `
   <section class="hero wrap">
-    <span class="eyebrow">The Speero research system</span>
-    <h1>Research turns data into insight.<br><em>Insight multiplies impact.</em></h1>
+    ${hasNativeH1() ? "" : `<span class="eyebrow">The Speero research system</span>
+    <h1>Research turns data into insight.<br><em>Insight multiplies impact.</em></h1>`}
     <p class="lede">Most teams know the symptom: low conversion, rising churn, a redesign about to ship. The hard part is knowing which research to run, and how to combine methods so the findings corroborate each other instead of sitting in isolation. That's what this hub is for.</p>
     <div class="hero-ctas">
       <a class="btn btn-red" href="${dirUrl('problems')}">Start with your problem</a>
@@ -291,7 +304,7 @@ function vLanding(){
       <span class="eyebrow">Work with Speero</span>
       <h2>When a programme stops producing impact, the cause is usually the research system underneath it.</h2>
       <p>Same effort, more result, because the effort is pointed at the problems that matter. If your tests aren't moving the number, let's look at what's feeding them.</p>
-      <a class="btn btn-yellow" href="https://speero.com" target="_blank" rel="noopener">Talk to us</a>
+      <a class="btn btn-yellow" href="${CFG.contactUrl}">Talk to us</a>
     </div>
   </section>`;
 }
@@ -403,7 +416,7 @@ function vRecipe(slug){
     <div class="wrap">
       <h2>Want this run for you?</h2>
       <p>Speero scopes, runs and synthesises this recipe as part of research and experimentation engagements.</p>
-      <a class="btn btn-yellow" href="https://speero.com" target="_blank" rel="noopener">Talk to us</a>
+      <a class="btn btn-yellow" href="${CFG.contactUrl}">Talk to us</a>
       <button class="btn btn-outline on-dark" style="margin-left:10px" type="button" onclick="openReese()">Or ask Reese first</button>
     </div>
   </section>`;
@@ -441,7 +454,7 @@ function renderMethodGrid(){
   );
   g.innerHTML = list.length ? list.map(([slug,m])=>`
     <a class="mcard card" href="${mUrl(slug)}">
-      <h4>${esc(m.name)}</h4>
+      <h3>${esc(m.name)}</h3>
       <p>${esc(firstSentence(m.desc))}</p>
       <span class="badges">${m.objective.map(objBadge).join("")}<span class="badge ${m.data==="Qualitative"?"qual":"quant"}">${m.data}</span><span class="badge">Signal: ${m.signal}</span><span class="badge">Effort: ${m.effort}</span></span>
     </a>`).join("") : `<p class="sub">No methods match that combination. Loosen a filter, or <a href="#" onclick="resetMF();return false;">reset all</a>.</p>`;
@@ -518,6 +531,10 @@ function render(){
   else if(route==="method") { html = vMethod(arg); navKey="methods"; }
   else html = vLanding();
   app.innerHTML = hubChrome() + html + reeseChrome();
+  // The native header already opens the page, so the first view section
+  // does not need its own top padding as well.
+  app.classList.toggle("rh-native", hasNativeH1());
+  enhanceNative();
   wireReese();
   renderMethodGrid();
   document.querySelectorAll("[data-nav]").forEach(a=>a.setAttribute("aria-current", a.dataset.nav===navKey ? "true":"false"));
